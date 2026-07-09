@@ -1,7 +1,57 @@
 import os
 import json
 from langchain_openai import ChatOpenAI
+from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage
+from langchain_core.outputs import ChatResult, ChatGeneration
+from ollama import Client as OllamaClient
+
+# Custom LangChain wrapper for Ollama Cloud (https://ollama.com)
+class OllamaCloudChat(BaseChatModel):
+    model: str = "gpt-oss:120b"
+    temperature: float = 0.7
+
+    def _generate(self, messages, stop=None, run_manager=None, **kwargs):
+        # 1. Format LangChain message history into Ollama Client format
+        ollama_messages = []
+        for m in messages:
+            # Match role names
+            if m.type == "human" or m.type == "user":
+                role = "user"
+            elif m.type == "ai" or m.type == "assistant":
+                role = "assistant"
+            elif m.type == "system":
+                role = "system"
+            else:
+                role = "user"
+            ollama_messages.append({
+                "role": role,
+                "content": m.content
+            })
+            
+        # 2. Initialize the official Ollama Cloud Client
+        api_key = os.environ.get("OLLAMA_API_KEY")
+        client = OllamaClient(
+            host="https://ollama.com",
+            headers={'Authorization': f'Bearer {api_key}'}
+        )
+        
+        # 3. Request model inference
+        response = client.chat(
+            model=self.model,
+            messages=ollama_messages
+        )
+        
+        # 4. Extract generated text and wrap in LangChain types
+        content = response['message']['content']
+        message = AIMessage(content=content)
+        generation = ChatGeneration(message=message)
+        return ChatResult(generations=[generation])
+
+    @property
+    def _llm_type(self) -> str:
+        return "ollama-cloud-chat"
+
 
 class MockChatOpenAI(ChatOpenAI):
     def __init__(self, model="gpt-4o-mini", temperature=0.7, **kwargs):
@@ -75,43 +125,39 @@ class MockChatOpenAI(ChatOpenAI):
         return AIMessage(content=content)
 
 def get_llm(model="gpt-4o-mini", temperature=0.7):
-    # 1. Check for Local Ollama support (no API key required)
-    ollama_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434/v1")
-    ollama_model = os.environ.get("OLLAMA_MODEL", "llama3")
-    try:
-        # ChatOpenAI acts as a wrapper for Ollama's OpenAI-compatible endpoint
-        llm = ChatOpenAI(
-            model=ollama_model,
-            openai_api_key="ollama-local-key", # Ignored by Ollama but required by client
-            openai_api_base=ollama_url,
-            temperature=temperature,
-            timeout=5 # Short timeout so it falls back quickly if local Ollama is not running
-        )
-        # Test connection
-        llm.invoke("Hi")
-        print(f"--- Using Local Ollama Model ({ollama_model}) ---")
-        return llm
-    except Exception as e:
-        # Silent fallback to next provider if local Ollama is offline
-        pass
-
-    # 2. Try Zhipu AI (GLM) cloud key
-    zhipu_key = os.environ.get("ZHIPU_API_KEY")
-    zhipu_url = os.environ.get("ZHIPU_BASE_URL")
-    if zhipu_key and zhipu_url:
+    # 1. Try Hosted Ollama Cloud if API key is present and points to ollama.com
+    ollama_key = os.environ.get("OLLAMA_API_KEY")
+    ollama_host = os.environ.get("OLLAMA_BASE_URL", "")
+    ollama_model = os.environ.get("OLLAMA_MODEL", "gpt-oss:120b")
+    
+    if ollama_key and "ollama.com" in ollama_host:
         try:
-            model_name = "glm-4-flash" if model == "gpt-4o-mini" else model
-            llm = ChatOpenAI(
-                model=model_name,
-                openai_api_key=zhipu_key,
-                openai_api_base=zhipu_url,
+            llm = OllamaCloudChat(
+                model=ollama_model,
                 temperature=temperature
             )
+            # Test connection
             llm.invoke("Hi")
-            print(f"--- Using Live Zhipu AI Cloud Model ({model_name}) ---")
+            print(f"--- Using Live Ollama Cloud ({ollama_model}) ---")
             return llm
         except Exception as e:
-            pass
+            print(f"--- Ollama Cloud connection failed ({str(e)[:50]}...). Trying local Ollama ---")
+
+    # 2. Check for Local Ollama support (no API key required)
+    local_url = "http://localhost:11434/v1"
+    try:
+        llm = ChatOpenAI(
+            model="llama3",
+            openai_api_key="ollama-local", # Required but ignored
+            openai_api_base=local_url,
+            temperature=temperature,
+            timeout=3 # Short timeout
+        )
+        llm.invoke("Hi")
+        print("--- Using Local Ollama Model (llama3) ---")
+        return llm
+    except:
+        pass
 
     # 3. Try OpenAI key
     openai_key = os.environ.get("OPENAI_API_KEY")
