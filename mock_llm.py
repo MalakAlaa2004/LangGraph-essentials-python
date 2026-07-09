@@ -5,7 +5,6 @@ from langchain_core.messages import AIMessage
 
 class MockChatOpenAI(ChatOpenAI):
     def __init__(self, model="gpt-4o-mini", temperature=0.7, **kwargs):
-        # Pass a mock key to satisfy validation, and call super init
         super().__init__(
             model=model,
             temperature=temperature,
@@ -76,17 +75,59 @@ class MockChatOpenAI(ChatOpenAI):
         return AIMessage(content=content)
 
 def get_llm(model="gpt-4o-mini", temperature=0.7):
-    # Try using real ChatOpenAI first. If it fails due to billing/quota or lacks a key, return MockChatOpenAI.
+    # 1. Check for Local Ollama support (no API key required)
+    ollama_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434/v1")
+    ollama_model = os.environ.get("OLLAMA_MODEL", "llama3")
     try:
-        if not os.environ.get("OPENAI_API_KEY"):
-            print("--- Using Mock LLM (No API Key found) ---")
-            return MockChatOpenAI(model=model, temperature=temperature)
-            
-        llm = ChatOpenAI(model=model, openai_api_key=os.environ.get("OPENAI_API_KEY"), temperature=temperature)
-        # Test connection with a fast prompt
-        llm.invoke("Test")
-        print("--- Using Real OpenAI LLM ---")
+        # ChatOpenAI acts as a wrapper for Ollama's OpenAI-compatible endpoint
+        llm = ChatOpenAI(
+            model=ollama_model,
+            openai_api_key="ollama-local-key", # Ignored by Ollama but required by client
+            openai_api_base=ollama_url,
+            temperature=temperature,
+            timeout=5 # Short timeout so it falls back quickly if local Ollama is not running
+        )
+        # Test connection
+        llm.invoke("Hi")
+        print(f"--- Using Local Ollama Model ({ollama_model}) ---")
         return llm
     except Exception as e:
-        print(f"--- OpenAI API connection failed ({str(e)[:60]}...). Falling back to Mock LLM ---")
-        return MockChatOpenAI(model=model, temperature=temperature)
+        # Silent fallback to next provider if local Ollama is offline
+        pass
+
+    # 2. Try Zhipu AI (GLM) cloud key
+    zhipu_key = os.environ.get("ZHIPU_API_KEY")
+    zhipu_url = os.environ.get("ZHIPU_BASE_URL")
+    if zhipu_key and zhipu_url:
+        try:
+            model_name = "glm-4-flash" if model == "gpt-4o-mini" else model
+            llm = ChatOpenAI(
+                model=model_name,
+                openai_api_key=zhipu_key,
+                openai_api_base=zhipu_url,
+                temperature=temperature
+            )
+            llm.invoke("Hi")
+            print(f"--- Using Live Zhipu AI Cloud Model ({model_name}) ---")
+            return llm
+        except Exception as e:
+            pass
+
+    # 3. Try OpenAI key
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if openai_key:
+        try:
+            llm = ChatOpenAI(
+                model=model,
+                openai_api_key=openai_key,
+                temperature=temperature
+            )
+            llm.invoke("Hi")
+            print(f"--- Using Live OpenAI LLM ({model}) ---")
+            return llm
+        except Exception as e:
+            pass
+
+    # 4. Fallback to Local Mock
+    print("--- Using Local Mock LLM ---")
+    return MockChatOpenAI(model=model, temperature=temperature)
