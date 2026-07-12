@@ -5,8 +5,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-# pyrefly: ignore [missing-import]
-from week2langgraph_101_extra import graph
+from week2.6_langgraph_101_extra import graph
 
 load_dotenv()
 
