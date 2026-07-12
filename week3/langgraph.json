@@ -1,0 +1,7 @@
+{
+  "graphs": {
+    "home_agent": "./langgraph_101.py:graph",
+    "home_agent_extra": "./langgraph_101_extra.py:graph"
+  },
+  "env": ".env"
+}
