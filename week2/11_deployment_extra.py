@@ -5,7 +5,9 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from week2.6_langgraph_101_extra import graph
+import importlib
+langgraph_101_extra = importlib.import_module("week2.6_langgraph_101_extra")
+graph = langgraph_101_extra.graph
 
 load_dotenv()
 
