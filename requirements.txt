@@ -3,3 +3,14 @@ langchain-openai>=1.3.3
 python-dotenv>=1.2.2
 ipykernel>=7.3.0
 notebook
+
+# Added for Prompt Hub, Evaluations, and MCP
+langchain
+langchainhub
+ollama
+pypdf
+nbconvert
+
+# Added for Ambient Agent Deployments
+fastapi
+uvicorn
