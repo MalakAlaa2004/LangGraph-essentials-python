@@ -8,8 +8,8 @@ from mock_llm import get_llm
 
 load_dotenv()
 
-article_1_path = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\ee2aa922-f01e-4776-a4e5-11fe2561b7c1\.system_generated\steps\377\content.md"
-article_2_path = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\ee2aa922-f01e-4776-a4e5-11fe2561b7c1\.system_generated\steps\381\content.md"
+article_1_path = "https://www.anthropic.com/engineering/building-effective-agents"
+article_2_path = "https://www.anthropic.com/engineering/harness-design-for-long-running-applications"
 
 def read_file(path):
     with open(path, "r", encoding="utf-8") as f:
