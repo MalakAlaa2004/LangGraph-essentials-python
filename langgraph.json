@@ -4,5 +4,8 @@
     "home_agent_extra": "./week2/6_langgraph_101_extra.py:graph",
     "sales_assistant": "./deepAgentCourse/5_sales_assistant.py:graph"
   },
-  "env": ".env"
+  "env": ".env",
+  "dependencies": [
+    "-r requirements.txt"
+  ]
 }
