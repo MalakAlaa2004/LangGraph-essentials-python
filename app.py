@@ -1,3 +1,15 @@
+# Monkeypatch Gradio Client schema parser to fix Pydantic v2 boolean schema crash
+try:
+    import gradio_client.utils
+    original_json_schema_to_python_type = gradio_client.utils._json_schema_to_python_type
+    def patched_json_schema_to_python_type(schema, defs):
+        if isinstance(schema, bool):
+            return "Any"
+        return original_json_schema_to_python_type(schema, defs)
+    gradio_client.utils._json_schema_to_python_type = patched_json_schema_to_python_type
+except Exception as e:
+    print(f"Failed to apply Gradio schema monkeypatch: {e}")
+
 import os
 import sys
 import gradio as gr
