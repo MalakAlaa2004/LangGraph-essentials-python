@@ -14,6 +14,15 @@ import os
 import sys
 import gradio as gr
 
+# Dummy GPU function to satisfy Hugging Face ZeroGPU space startup check
+try:
+    import spaces
+    @spaces.GPU
+    def dummy_gpu_func():
+        pass
+except ImportError:
+    pass
+
 import importlib
 sales_module = importlib.import_module("deepAgentCourse.5_sales_assistant")
 graph = sales_module.graph
