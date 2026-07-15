@@ -17,5 +17,5 @@ COPY . .
 # Hugging Face Spaces requires port 7860
 EXPOSE 7860
 
-# Start the FastAPI sales assistant server
-CMD ["uvicorn", "deepAgentCourse.5_sales_assistant_extra:app", "--host", "0.0.0.0", "--port", "7860"]
+# Start the Gradio sales assistant dashboard UI
+CMD ["python", "deepAgentCourse/sales_assistant_ui.py"]

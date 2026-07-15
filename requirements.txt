@@ -6,3 +6,4 @@ ollama
 pypdf
 fastapi
 uvicorn
+gradio>=4.0.0
