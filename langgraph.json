@@ -1,0 +1,8 @@
+{
+  "graphs": {
+    "home_agent": "./week2/6_langgraph_101.py:graph",
+    "home_agent_extra": "./week2/6_langgraph_101_extra.py:graph",
+    "sales_assistant": "./deepAgentCourse/5_sales_assistant.py:graph"
+  },
+  "env": ".env"
+}
