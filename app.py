@@ -2,8 +2,9 @@ import os
 import sys
 import gradio as gr
 
-# Import the sales assistant graph directly
-from deepAgentCourse.5_sales_assistant import graph
+import importlib
+sales_module = importlib.import_module("deepAgentCourse.5_sales_assistant")
+graph = sales_module.graph
 
 # Session tracking state
 session_thread = {"configurable": {"thread_id": "huggingface-sales-thread"}}
