@@ -4,7 +4,7 @@ python-dotenv==1.2.2
 langchain==0.2.16
 ollama==0.6.2
 pypdf==6.14.2
-fastapi==0.139.0
-uvicorn==0.51.0
+fastapi
+uvicorn
 gradio==4.44.1
 huggingface_hub<0.25.0
