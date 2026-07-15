@@ -114,5 +114,4 @@ with gr.Blocks(theme=gr.themes.Soft(), title="B2B Sales Assistant Hub") as demo:
         outputs=[chatbot, logs_display, manager_display, quote_display, inventory_display]
     )
 
-if __name__ == "__main__":
-    demo.launch()
+demo.launch()
