@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: legacy-modernization-platform
+Version: 0.1.0
+Summary: Multi-Agent Legacy Architecture Modernization Platform
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.110.0
+Requires-Dist: starlette>=0.36.0
+Requires-Dist: uvicorn>=0.28.0
+Requires-Dist: pydantic>=2.6.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: alembic>=1.13.0
+Requires-Dist: langchain>=0.3.0
+Requires-Dist: langgraph>=0.2.0
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"
+
+# Legacy Modernization Platform — Phase 1 MVP
+
+A multi-agent platform for documenting, assessing, and modernizing legacy system architectures using Deep Agents (LangGraph/LangChain).
+
+## Project Structure
+- `backend/`: FastAPI application, endpoints, and database models.
+- `agents/`: Deep Agents runtime, subagent prompts, and skills.
+- `frontend/`: React + Vite model viewer user interface.
+- `docs/`: Architecture specifications and diagrams.
+- `test-fixtures/`: Sample legacy codebase and evidence files.
+
+## Setup Instructions
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd legacy-modernization-platform
