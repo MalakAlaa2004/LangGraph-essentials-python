@@ -1,0 +1,26 @@
+{
+  "id": "goal-001",
+  "system_id": "system-demo",
+  "layer": "motivation",
+  "archimate_type": "Goal",
+  "name": "Reduce Payment Latency",
+  "description": "Achieve sub-200ms transaction settlement latency across all merchant gateways.",
+  "properties": {
+    "priority": "high",
+    "target_ms": 200
+  },
+  "relationships": [],
+  "evidence": [
+    {
+      "source_type": "code",
+      "location": "legacy/payment_processor.py#L15-L85",
+      "excerpt": "class LegacyPaymentMonolith:\n    def process_payment(self, payload):",
+      "confidence_score": 0.95,
+      "rationales": [
+        "Monolith payment handling class located in legacy codebase"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-25T18:04:35.053455"
+}

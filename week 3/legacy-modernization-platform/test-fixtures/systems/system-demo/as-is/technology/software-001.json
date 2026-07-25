@@ -1,0 +1,32 @@
+{
+  "id": "software-001",
+  "system_id": "system-demo",
+  "layer": "technology",
+  "archimate_type": "SystemSoftware",
+  "name": "PostgreSQL Database Engine",
+  "description": "Relational database engine storing persistent application state.",
+  "properties": {
+    "version": "PostgreSQL 16 Alpine"
+  },
+  "relationships": [
+    {
+      "target_element_id": "comp-001",
+      "relationship_type": "Serving",
+      "description": "Provides relational storage to monolith",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "source_type": "iac",
+      "location": "infrastructure/docker-compose.yaml#L10-L30",
+      "excerpt": "services:\n  postgres:\n    image: postgres:16-alpine",
+      "confidence_score": 0.98,
+      "rationales": [
+        "PostgreSQL database container declared in IaC"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-25T18:04:35.053455"
+}

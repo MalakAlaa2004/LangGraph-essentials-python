@@ -1,0 +1,32 @@
+{
+  "id": "proc-001",
+  "system_id": "system-demo",
+  "layer": "business",
+  "archimate_type": "BusinessProcess",
+  "name": "Process Credit Card Payment",
+  "description": "End-to-end business workflow verifying merchant credentials and settling funds.",
+  "properties": {
+    "avg_duration_sec": 1.2
+  },
+  "relationships": [
+    {
+      "target_element_id": "role-001",
+      "relationship_type": "Assignment",
+      "description": "Role executes process",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "source_type": "code",
+      "location": "legacy/payment_processor.py#L15-L85",
+      "excerpt": "class LegacyPaymentMonolith:\n    def process_payment(self, payload):",
+      "confidence_score": 0.95,
+      "rationales": [
+        "Monolith payment handling class located in legacy codebase"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-25T18:04:35.053455"
+}

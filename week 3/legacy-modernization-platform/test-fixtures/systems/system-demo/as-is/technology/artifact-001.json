@@ -1,0 +1,32 @@
+{
+  "id": "artifact-001",
+  "system_id": "system-demo",
+  "layer": "technology",
+  "archimate_type": "Artifact",
+  "name": "Database Schema SQL Migration Script",
+  "description": "SQL DDL script initializing database tables and foreign keys.",
+  "properties": {
+    "file_format": "sql"
+  },
+  "relationships": [
+    {
+      "target_element_id": "software-001",
+      "relationship_type": "Realization",
+      "description": "Realizes DB schema",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "source_type": "iac",
+      "location": "infrastructure/docker-compose.yaml#L10-L30",
+      "excerpt": "services:\n  postgres:\n    image: postgres:16-alpine",
+      "confidence_score": 0.98,
+      "rationales": [
+        "PostgreSQL database container declared in IaC"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-25T18:04:35.053455"
+}
