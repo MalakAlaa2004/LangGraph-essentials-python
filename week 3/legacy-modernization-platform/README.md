@@ -15,3 +15,8 @@ A multi-agent platform for documenting, assessing, and modernizing legacy system
    ```bash
    git clone <your-repo-url>
    cd legacy-modernization-platform
+## Database Setup (Task A2)
+
+1. **Start PostgreSQL Container:**
+   ```bash
+   docker compose up -d
