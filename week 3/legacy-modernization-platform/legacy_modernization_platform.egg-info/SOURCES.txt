@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-agents/_init_.py
-backend/_init_.py
-legacy_modernization_platform.egg-info/PKG-INFO
-legacy_modernization_platform.egg-info/SOURCES.txt
-legacy_modernization_platform.egg-info/dependency_links.txt
-legacy_modernization_platform.egg-info/requires.txt
-legacy_modernization_platform.egg-info/top_level.txt

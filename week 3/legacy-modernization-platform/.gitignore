@@ -24,3 +24,7 @@ dist/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Build Artifacts
+*.egg-info/
+.egg-info/
