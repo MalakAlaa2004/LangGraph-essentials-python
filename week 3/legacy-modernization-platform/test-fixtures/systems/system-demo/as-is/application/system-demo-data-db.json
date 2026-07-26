@@ -1,0 +1,31 @@
+{
+  "id": "system-demo-data-db",
+  "system_id": "system-demo",
+  "layer": "application",
+  "archimate_type": "DataObject",
+  "name": "Transactions Database Table",
+  "description": "Relational database table storing historical payment settlement records.",
+  "properties": {
+    "table_name": "transactions",
+    "columns": [
+      "id",
+      "amount",
+      "merchant_id",
+      "created_at"
+    ]
+  },
+  "relationships": [],
+  "evidence": [
+    {
+      "source_type": "sql",
+      "location": "db/migrations/V1__init_schema.sql#L1-L45",
+      "excerpt": "CREATE TABLE transactions (\n    id SERIAL PRIMARY KEY,\n    amount NUMERIC(10,2),\n    merchant_id VARCHAR(50)\n);",
+      "confidence_score": 0.97,
+      "rationales": [
+        "Discovered SQL DDL CREATE TABLE statements and foreign key constraints"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-26T19:36:25.155819"
+}
