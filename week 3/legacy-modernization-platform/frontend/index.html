@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Modernization Platform — ArchiMate AI Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-container">
+        <div class="logo-badge">⚡</div>
+        <div class="logo-text">
+          <h2>LegacyMod AI</h2>
+          <span class="subtitle">ArchiMate Studio v1.0</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button id="nav-dashboard" class="nav-item active" onclick="switchView('dashboard')">
+          <span class="icon">📊</span> Overview & Health
+        </button>
+        <button id="nav-trigger" class="nav-item" onclick="switchView('trigger')">
+          <span class="icon">🚀</span> Trigger Ingestion
+        </button>
+        <button id="nav-browser" class="nav-item" onclick="switchView('browser')">
+          <span class="icon">🔍</span> Element Browser
+        </button>
+        <button id="nav-artifacts" class="nav-item" onclick="switchView('artifacts')">
+          <span class="icon">📦</span> Artifacts & PRs
+        </button>
+      </nav>
+
+      <div class="system-status-card">
+        <div class="status-indicator online" id="backend-status-dot"></div>
+        <div class="status-info">
+          <span class="status-title">Backend API</span>
+          <span class="status-value" id="backend-status-text">Checking...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="page-title-box">
+          <h1 id="page-title">Overview & Platform Health</h1>
+          <p id="page-desc">Real-time status of multi-agent pipeline and legacy systems.</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" onclick="fetchPlatformData()">🔄 Refresh</button>
+        </div>
+      </header>
+
+      <!-- View 1: Dashboard Overview -->
+      <section id="view-dashboard" class="content-view active">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-icon">🏢</span>
+            <div class="metric-details">
+              <span class="metric-label">Registered Systems</span>
+              <h3 class="metric-value" id="metric-systems-count">1</h3>
+            </div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-icon">⚙️</span>
+            <div class="metric-details">
+              <span class="metric-label">Ingestion Jobs</span>
+              <h3 class="metric-value" id="metric-jobs-count">0</h3>
+            </div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-icon">🏛️</span>
+            <div class="metric-details">
+              <span class="metric-label">Model Elements</span>
+              <h3 class="metric-value" id="metric-elements-count">12</h3>
+            </div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-icon">✨</span>
+            <div class="metric-details">
+              <span class="metric-label">Graph Health</span>
+              <h3 class="metric-value text-success">100%</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="card margin-top">
+          <h3>🤖 5-Subagent Pipeline Architecture</h3>
+          <div class="ascii-pipeline-box">
+            <code>START ➔ [Motivation] ➔ [Strategy] ➔ [Business] ➔ [Application] ➔ [Technology] ➔ END</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: Trigger Ingestion Job (Task I2) -->
+      <section id="view-trigger" class="content-view">
+        <div class="card">
+          <h3>🚀 Trigger Async Ingestion Pipeline</h3>
+          <p class="text-muted">Launch the top-level orchestrator pipeline across all 5 ArchiMate layers.</p>
+
+          <form id="trigger-job-form" onsubmit="handleTriggerJob(event)" class="form-grid">
+            <div class="form-group">
+              <label for="select-system">Select Target Legacy System</label>
+              <select id="select-system" class="form-control" required>
+                <option value="system-demo">system-demo (Legacy Payment Monolith)</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btn-submit-job">⚡ Launch Ingestion Job</button>
+          </form>
+        </div>
+
+        <div class="card margin-top">
+          <h3>📋 Job Execution Status</h3>
+          <div id="job-status-container" class="job-status-box">
+            <p class="text-muted">No active job running. Trigger a job above to view progress.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 3: Model Element Browser (Task I3) -->
+      <section id="view-browser" class="content-view">
+        <div class="filter-bar">
+          <div class="search-box">
+            <input type="text" id="browser-search" placeholder="Search elements by name or type..." oninput="filterElements()" class="form-control">
+          </div>
+          <div class="layer-pills">
+            <button class="pill active" onclick="setLayerFilter('all', this)">All Layers</button>
+            <button class="pill" onclick="setLayerFilter('motivation', this)">Motivation</button>
+            <button class="pill" onclick="setLayerFilter('strategy', this)">Strategy</button>
+            <button class="pill" onclick="setLayerFilter('business', this)">Business</button>
+            <button class="pill" onclick="setLayerFilter('application', this)">Application</button>
+            <button class="pill" onclick="setLayerFilter('technology', this)">Technology</button>
+          </div>
+        </div>
+
+        <div id="elements-grid" class="elements-grid">
+          <!-- Element Cards Rendered Here -->
+        </div>
+      </section>
+
+      <!-- View 4: Artifact Version & PR Status (Task I4) -->
+      <section id="view-artifacts" class="content-view">
+        <div class="card">
+          <h3>📦 Merged Artifact Versions & GitHub PR Status</h3>
+          <p class="text-muted">Track automated Pull Requests and database model version history.</p>
+
+          <div class="table-container margin-top">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Version / Tag</th>
+                  <th>System</th>
+                  <th>Commit SHA</th>
+                  <th>Phase</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="artifacts-table-body">
+                <tr>
+                  <td><code>pr-42-merged</code></td>
+                  <td>system-demo</td>
+                  <td><code>a1b2c3d4e5f6</code></td>
+                  <td><span class="badge badge-info">as-is</span></td>
+                  <td><span class="badge badge-success">Merged</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

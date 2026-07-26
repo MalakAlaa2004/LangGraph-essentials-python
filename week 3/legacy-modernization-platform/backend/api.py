@@ -1,5 +1,8 @@
+import os
 from typing import Any, Dict, List
 from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from backend.database import get_db
@@ -14,6 +17,21 @@ app = FastAPI(
 )
 
 app.include_router(github_webhook_router)
+
+# Mount Frontend Web Dashboard
+frontend_dir = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "frontend")
+)
+if os.path.exists(frontend_dir):
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+
+@app.get("/")
+def read_root():
+    index_file = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "Legacy Modernization Platform Backend API"}
 
 
 @app.get("/health")
