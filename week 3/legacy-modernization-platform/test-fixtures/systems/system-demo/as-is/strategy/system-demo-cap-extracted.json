@@ -1,0 +1,32 @@
+{
+  "id": "system-demo-cap-extracted",
+  "system_id": "system-demo",
+  "layer": "strategy",
+  "archimate_type": "Capability",
+  "name": "Scalable Payment Settlement",
+  "description": "Ability to dynamically scale payment processing during peak shopping hours.",
+  "properties": {
+    "target_tps": 5000
+  },
+  "relationships": [
+    {
+      "target_element_id": "system-demo-goal-extracted",
+      "relationship_type": "Realization",
+      "description": "Realizes cloud migration goal",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "source_type": "doc",
+      "location": "docs/strategy_adr.md",
+      "excerpt": "ADR 001: Decompose payment monolith into microservices to achieve sub-200ms latency.",
+      "confidence_score": 0.92,
+      "rationales": [
+        "Extracted from strategic ADR documentation"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-26T19:15:10.906487"
+}

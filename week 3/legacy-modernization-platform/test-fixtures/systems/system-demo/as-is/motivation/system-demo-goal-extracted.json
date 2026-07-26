@@ -1,0 +1,25 @@
+{
+  "id": "system-demo-goal-extracted",
+  "system_id": "system-demo",
+  "layer": "motivation",
+  "archimate_type": "Goal",
+  "name": "Cloud Migration Goal",
+  "description": "Migrate legacy monolith to cloud-native microservices.",
+  "properties": {
+    "source": "strategy_doc"
+  },
+  "relationships": [],
+  "evidence": [
+    {
+      "source_type": "doc",
+      "location": "docs/strategy_adr.md",
+      "excerpt": "ADR 001: Decompose payment monolith into microservices to achieve sub-200ms latency.",
+      "confidence_score": 0.92,
+      "rationales": [
+        "Extracted from strategic ADR documentation"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-26T19:15:10.906487"
+}
