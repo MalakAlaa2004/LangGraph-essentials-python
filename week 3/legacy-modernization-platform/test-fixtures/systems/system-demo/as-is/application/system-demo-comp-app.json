@@ -1,0 +1,26 @@
+{
+  "id": "system-demo-comp-app",
+  "system_id": "system-demo",
+  "layer": "application",
+  "archimate_type": "ApplicationComponent",
+  "name": "Legacy Payment Monolith Service",
+  "description": "Python application component processing inbound credit card charges.",
+  "properties": {
+    "language": "python",
+    "framework": "fastapi"
+  },
+  "relationships": [],
+  "evidence": [
+    {
+      "source_type": "code",
+      "location": "legacy/payment_service.py#L1-L75",
+      "excerpt": "class PaymentProcessor:\n    def process_charge(self, token: str, amount: float):\n        return {'status': 'success'}",
+      "confidence_score": 0.96,
+      "rationales": [
+        "Discovered class definition and REST endpoints in source code"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-26T19:23:50.555380"
+}

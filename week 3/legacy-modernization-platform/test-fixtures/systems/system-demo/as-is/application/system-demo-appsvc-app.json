@@ -1,0 +1,33 @@
+{
+  "id": "system-demo-appsvc-app",
+  "system_id": "system-demo",
+  "layer": "application",
+  "archimate_type": "ApplicationService",
+  "name": "Payment Processing REST Service",
+  "description": "Exposed REST application service for authorization and settlement.",
+  "properties": {
+    "protocol": "REST",
+    "endpoint": "/api/v1/charge"
+  },
+  "relationships": [
+    {
+      "target_element_id": "system-demo-comp-app",
+      "relationship_type": "Realization",
+      "description": "Component realizes REST service",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "source_type": "code",
+      "location": "legacy/payment_service.py#L1-L75",
+      "excerpt": "class PaymentProcessor:\n    def process_charge(self, token: str, amount: float):\n        return {'status': 'success'}",
+      "confidence_score": 0.96,
+      "rationales": [
+        "Discovered class definition and REST endpoints in source code"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-26T19:23:50.555380"
+}
