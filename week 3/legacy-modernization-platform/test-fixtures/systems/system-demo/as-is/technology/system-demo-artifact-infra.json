@@ -1,0 +1,32 @@
+{
+  "id": "system-demo-artifact-infra",
+  "system_id": "system-demo",
+  "layer": "technology",
+  "archimate_type": "Artifact",
+  "name": "PostgreSQL Docker Compose Manifest",
+  "description": "Declarative Docker Compose YAML manifest configuring database services.",
+  "properties": {
+    "format": "yaml"
+  },
+  "relationships": [
+    {
+      "target_element_id": "system-demo-software-infra",
+      "relationship_type": "Realization",
+      "description": "Manifest realizes system software container",
+      "evidence": []
+    }
+  ],
+  "evidence": [
+    {
+      "source_type": "iac",
+      "location": "infrastructure/docker-compose.yaml#L10-L35",
+      "excerpt": "services:\n  postgres:\n    image: postgres:16-alpine\n    ports:\n      - '5432:5432'",
+      "confidence_score": 0.98,
+      "rationales": [
+        "Discovered container services and node infrastructure in IaC file"
+      ]
+    }
+  ],
+  "created_by_run_id": null,
+  "created_at": "2026-07-26T19:34:21.777968"
+}
