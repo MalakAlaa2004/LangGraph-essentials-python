@@ -34,6 +34,22 @@ def read_root():
     return {"message": "Legacy Modernization Platform Backend API"}
 
 
+@app.get("/index.css")
+def read_css():
+    css_file = os.path.join(frontend_dir, "index.css")
+    if os.path.exists(css_file):
+        return FileResponse(css_file, media_type="text/css")
+    raise HTTPException(status_code=404, detail="File not found")
+
+
+@app.get("/app.js")
+def read_js():
+    js_file = os.path.join(frontend_dir, "app.js")
+    if os.path.exists(js_file):
+        return FileResponse(js_file, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="File not found")
+
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "service": "legacy-modernization-platform"}
